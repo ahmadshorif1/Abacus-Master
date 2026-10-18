@@ -1,0 +1,6 @@
+{
+  "name": "Abacus Master - Soroban Learning & Practice",
+  "description": "Interactive Japanese Soroban abacus learning, practice, mental arithmetic and progress tracking app with Firebase authentication and ad monetization support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
