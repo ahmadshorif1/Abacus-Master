@@ -13,17 +13,17 @@ import { getDatabase, ref, set, get, child } from 'firebase/database';
 import { UserProfile, UserStats } from '../types';
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyArLtISxMf6kOHXpH7pEeu1guI5-hERqo4",
-  authDomain: "abacus-master-b7d57.firebaseapp.com",
-  databaseURL: "https://abacus-master-b7d57-default-rtdb.firebaseio.com",
-  projectId: "abacus-master-b7d57",
-  storageBucket: "abacus-master-b7d57.firebasestorage.app",
-  messagingSenderId: "1098234177030",
-  appId: "1:1098234177030:web:0198913031dfdc69c3c587",
-  measurementId: "G-NE366QFH24"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "AIzaSyArLtISxMf6kOHXpH7pEeu1guI5-hERqo4",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "abacus-master-b7d57.firebaseapp.com",
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || "https://abacus-master-b7d57-default-rtdb.firebaseio.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "abacus-master-b7d57",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "abacus-master-b7d57.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "1098234177030",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "1:1098234177030:web:0198913031dfdc69c3c587",
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "G-NE366QFH24"
 };
 
-export const vapidKey = "BI8clKYd0CVi0hugxsjYEHbQyU9azVUoQlyoVov9Z8jIzH__z0Mxia8mJHgjhDKWeW06AR0PAx1eCFmAu_3dDPw";
+export const vapidKey = import.meta.env.VITE_FIREBASE_VAPID_KEY || "BI8clKYd0CVi0hugxsjYEHbQyU9azVUoQlyoVov9Z8jIzH__z0Mxia8mJHgjhDKWeW06AR0PAx1eCFmAu_3dDPw";
 
 // Initialize Firebase safely
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();

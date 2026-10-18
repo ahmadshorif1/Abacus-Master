@@ -10,10 +10,10 @@ interface MonetizationCenterProps {
 const DEFAULT_CONFIG: AdConfiguration = {
   adsterraEnabled: true,
   monetagEnabled: true,
-  adsterraNativeBannerKey: '4a9b8c7d6e5f4123890abc',
-  adsterraSocialBarKey: '//pl22345678.profitablegatecpm.com/4a/9b/8c/...',
-  monetagZoneId: '8934521',
-  monetagInPagePushKey: 'https://al5sm.com/pfe/current/tag.min.js?z=8934521',
+  adsterraNativeBannerKey: import.meta.env.VITE_ADSTERRA_NATIVE_BANNER_KEY || '4a9b8c7d6e5f4123890abc',
+  adsterraSocialBarKey: import.meta.env.VITE_ADSTERRA_SOCIAL_BAR_KEY || '//pl22345678.profitablegatecpm.com/4a/9b/8c/...',
+  monetagZoneId: import.meta.env.VITE_MONETAG_ZONE_ID || '8934521',
+  monetagInPagePushKey: import.meta.env.VITE_MONETAG_IN_PAGE_PUSH_KEY || 'https://al5sm.com/pfe/current/tag.min.js?z=8934521',
   testMode: true
 };
 
