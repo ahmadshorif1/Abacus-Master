@@ -25,6 +25,7 @@ import { LessonViewer } from './components/LessonViewer';
 import { MonetizationCenter } from './components/MonetizationCenter';
 import { DocumentationModal } from './components/DocumentationModal';
 import { AuthModal } from './components/AuthModal';
+import { PWAInstallButton } from './components/PWAInstallButton';
 
 import {
   Calculator,
@@ -203,8 +204,11 @@ export default function App() {
             </button>
           </nav>
 
-          {/* Right Header Controls (Sound, Language, Auth Profile) */}
-          <div className="flex items-center gap-2">
+          {/* Right Header Controls (Install, Sound, Language, Auth Profile) */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* Install App on Phone / Desktop */}
+            <PWAInstallButton lang={lang} />
+
             {/* Sound Toggle */}
             <button
               onClick={() => setSoundEnabled(!soundEnabled)}
@@ -276,7 +280,7 @@ export default function App() {
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800/80 px-2 py-1.5 flex justify-around">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-md border-t border-slate-800/80 px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))] flex justify-around">
         <button
           onClick={() => setCurrentNav('practice')}
           className={`flex flex-col items-center gap-0.5 py-1 px-3 rounded-lg text-[10px] font-bold cursor-pointer transition-colors ${

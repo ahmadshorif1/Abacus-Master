@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { RodData, ThemeType, Language } from '../types';
 import { sound } from '../services/audio';
-import { RotateCcw, Eye, EyeOff } from 'lucide-react';
+import { RotateCcw, Eye, EyeOff, Maximize2, Minimize2 } from 'lucide-react';
 import { getT } from '../constants/translations';
 
 interface AbacusProps {
@@ -59,6 +59,26 @@ export const Abacus: React.FC<AbacusProps> = ({
   className = ''
 }) => {
   const t = getT(lang);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const touchStartYRef = useRef<{ [key: string]: number }>({});
+
+  const triggerHaptic = () => {
+    if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate(10);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().then(() => setIsFullscreen(true)).catch(() => {});
+    } else {
+      document.exitFullscreen().then(() => setIsFullscreen(false)).catch(() => {});
+    }
+  };
 
   // Calculate total number from rods (left to right, rightmost is 10^0)
   const totalValue = useMemo(() => {
@@ -80,6 +100,7 @@ export const Abacus: React.FC<AbacusProps> = ({
       ...target,
       upper: !target.upper
     };
+    triggerHaptic();
     sound.playBeadClick(newRods[index].upper ? 1.15 : 0.95);
     onRodsChange(newRods);
   };
@@ -103,12 +124,56 @@ export const Abacus: React.FC<AbacusProps> = ({
       ...current,
       lowerCount: newCount
     };
+    triggerHaptic();
     sound.playBeadClick(1.0 + beadIndexFromBeam * 0.08);
     onRodsChange(newRods);
   };
 
+  // Touch flick swipe handler for Upper Deck
+  const handleUpperTouchStart = (e: React.TouchEvent, rodIndex: number) => {
+    touchStartYRef.current[`u_${rodIndex}`] = e.touches[0].clientY;
+  };
+
+  const handleUpperTouchEnd = (e: React.TouchEvent, rodIndex: number) => {
+    const startY = touchStartYRef.current[`u_${rodIndex}`];
+    if (startY === undefined) return;
+    const diffY = e.changedTouches[0].clientY - startY;
+
+    if (Math.abs(diffY) > 15) {
+      // Swipe down: activate (move to beam)
+      // Swipe up: deactivate (move away from beam)
+      const targetState = diffY > 0;
+      if (rods[rodIndex].upper !== targetState) {
+        handleUpperClick(rodIndex);
+      }
+    }
+  };
+
+  // Touch flick swipe handler for Lower Deck
+  const handleLowerTouchStart = (e: React.TouchEvent, rodIndex: number) => {
+    touchStartYRef.current[`l_${rodIndex}`] = e.touches[0].clientY;
+  };
+
+  const handleLowerTouchEnd = (e: React.TouchEvent, rodIndex: number) => {
+    const startY = touchStartYRef.current[`l_${rodIndex}`];
+    if (startY === undefined) return;
+    const diffY = e.changedTouches[0].clientY - startY;
+
+    if (Math.abs(diffY) > 18) {
+      const current = rods[rodIndex].lowerCount;
+      if (diffY < 0 && current < 4) {
+        // Swiped UP -> push lower beads towards beam (+1)
+        handleLowerClick(rodIndex, current);
+      } else if (diffY > 0 && current > 0) {
+        // Swiped DOWN -> pull lower beads away (-1)
+        handleLowerClick(rodIndex, current - 1);
+      }
+    }
+  };
+
   const handleReset = () => {
     if (!interactive) return;
+    triggerHaptic();
     sound.playResetSweep();
     const cleared = rods.map(r => ({ ...r, upper: false, lowerCount: 0 }));
     onRodsChange(cleared);
@@ -130,7 +195,7 @@ export const Abacus: React.FC<AbacusProps> = ({
     <div className={`flex flex-col items-center w-full select-none ${className}`}>
       {/* Abacus Readout & Quick Control Bar */}
       <div className="w-full flex items-center justify-between px-3 py-2 bg-slate-900/90 text-white rounded-t-xl border-b border-slate-800 shadow-inner">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={handleReset}
             disabled={!interactive}
@@ -150,6 +215,15 @@ export const Abacus: React.FC<AbacusProps> = ({
               <span className="hidden sm:inline">{t.beadsValue}</span>
             </button>
           )}
+
+          {/* Mobile Fullscreen Toggle Button */}
+          <button
+            onClick={toggleFullscreen}
+            title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Mobile Mode'}
+            className="p-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors cursor-pointer"
+          >
+            {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 text-amber-400" /> : <Maximize2 className="w-3.5 h-3.5" />}
+          </button>
         </div>
 
         {/* Big Display Value */}
@@ -207,8 +281,10 @@ export const Abacus: React.FC<AbacusProps> = ({
                   {/* Upper Deck (Heaven Bead, value 5) */}
                   {/* Total height = 22px bead + 28px travel = 50px */}
                   <div
-                    className="relative w-full h-[50px] cursor-pointer"
+                    className="relative w-full h-[50px] cursor-pointer touch-none"
                     onClick={() => handleUpperClick(rodIdx)}
+                    onTouchStart={(e) => handleUpperTouchStart(e, rodIdx)}
+                    onTouchEnd={(e) => handleUpperTouchEnd(e, rodIdx)}
                     title={`Rod ${rodIdx + 1} - Upper Bead (5)`}
                   >
                     {/* Bamboo rod running down center */}
@@ -247,7 +323,11 @@ export const Abacus: React.FC<AbacusProps> = ({
                       for crystal-clear reading and counting separation.
                       Total height = 4 * 23px + 48px travel gap = 140px.
                   */}
-                  <div className="relative w-full h-[140px]">
+                  <div
+                    className="relative w-full h-[140px] touch-none"
+                    onTouchStart={(e) => handleLowerTouchStart(e, rodIdx)}
+                    onTouchEnd={(e) => handleLowerTouchEnd(e, rodIdx)}
+                  >
                     {/* Bamboo rod running down center */}
                     <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-1.5 bg-gradient-to-r from-amber-200 via-amber-100 to-amber-300 rounded-sm shadow-inner pointer-events-none" />
 

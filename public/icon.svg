@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+    <linearGradient id="bead-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+    <linearGradient id="bead-red" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f87171" />
+      <stop offset="50%" stop-color="#ef4444" />
+      <stop offset="100%" stop-color="#dc2626" />
+    </linearGradient>
+    <linearGradient id="bead-cyan" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="rod" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#fef9c3" />
+      <stop offset="100%" stop-color="#fde047" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background rounded app icon frame -->
+  <rect width="512" height="512" rx="115" fill="url(#bg)" stroke="#1e293b" stroke-width="8" />
+
+  <!-- Outer Abacus Frame -->
+  <rect x="44" y="64" width="424" height="384" rx="24" fill="#090d16" stroke="#f59e0b" stroke-width="8" />
+
+  <!-- Bamboo Rods -->
+  <rect x="130" y="80" width="12" height="352" rx="4" fill="url(#rod)" />
+  <rect x="250" y="80" width="12" height="352" rx="4" fill="url(#rod)" />
+  <rect x="370" y="80" width="12" height="352" rx="4" fill="url(#rod)" />
+
+  <!-- Horizontal Reckoning Beam with unit dots -->
+  <rect x="44" y="184" width="424" height="28" fill="#f8fafc" stroke="#94a3b8" stroke-width="3" />
+  <circle cx="256" cy="198" r="6" fill="#0f172a" />
+
+  <!-- Upper deck beads (Heaven beads) -->
+  <!-- Rod 1: Up (Inactive) -->
+  <polygon points="100,100 172,100 184,124 88,124" fill="url(#bead-red)" />
+  <polygon points="88,124 184,124 172,148 100,148" fill="url(#bead-red)" />
+  <!-- Rod 2: Down (Active +5 touching beam) -->
+  <polygon points="220,136 292,136 304,160 208,160" fill="url(#bead-gold)" />
+  <polygon points="208,160 304,160 292,184 220,184" fill="url(#bead-gold)" />
+  <!-- Rod 3: Up (Inactive) -->
+  <polygon points="340,100 412,100 424,124 328,124" fill="url(#bead-cyan)" />
+  <polygon points="328,124 424,124 412,148 340,148" fill="url(#bead-cyan)" />
+
+  <!-- Lower deck beads (Earth beads) -->
+  <!-- Rod 2: Active beads (+2 touching beam) -->
+  <polygon points="220,212 292,212 304,236 208,236" fill="url(#bead-gold)" />
+  <polygon points="208,236 304,236 292,260 220,260" fill="url(#bead-gold)" />
+
+  <polygon points="220,262 292,262 304,286 208,286" fill="url(#bead-gold)" />
+  <polygon points="208,286 304,286 292,310 220,310" fill="url(#bead-gold)" />
+
+  <!-- Rod 2: Inactive lower beads at bottom -->
+  <polygon points="220,364 292,364 304,388 208,388" fill="url(#bead-gold)" />
+  <polygon points="208,388 304,388 292,412 220,412" fill="url(#bead-gold)" />
+
+  <!-- Rod 1: Inactive lower beads at bottom -->
+  <polygon points="100,340 172,340 184,364 88,364" fill="url(#bead-red)" />
+  <polygon points="88,364 184,364 172,388 100,388" fill="url(#bead-red)" />
+  <polygon points="100,388 172,388 184,412 88,412" fill="url(#bead-red)" />
+  <polygon points="88,412 184,412 172,436 100,436" fill="url(#bead-red)" />
+
+  <!-- Rod 3: Inactive lower beads at bottom -->
+  <polygon points="340,340 412,340 424,364 328,364" fill="url(#bead-cyan)" />
+  <polygon points="328,364 424,364 412,388 340,388" fill="url(#bead-cyan)" />
+  <polygon points="340,388 412,388 424,412 328,412" fill="url(#bead-cyan)" />
+  <polygon points="328,412 424,412 412,436 340,436" fill="url(#bead-cyan)" />
+</svg>

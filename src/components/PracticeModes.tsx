@@ -16,6 +16,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { getT } from '../constants/translations';
+import { AdBanner } from './AdBanner';
 
 interface PracticeModesProps {
   lang: Language;
@@ -448,6 +449,11 @@ export const PracticeModes: React.FC<PracticeModesProps> = ({
               <span className="font-bold text-cyan-400 block mb-1">⚪ {t.unitDot}</span>
               <p>{lang === 'bn' ? 'বিমের সাদা বিন্দু এককের ঘর (Units / 1s) চিহ্নিত করে।' : 'Dots on beam mark unit reckoning columns.'}</p>
             </div>
+          </div>
+
+          {/* Adsterra / Monetag Banner Unit */}
+          <div className="pt-2 border-t border-slate-800">
+            <AdBanner network="adsterra" />
           </div>
         </div>
       )}
