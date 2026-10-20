@@ -27,8 +27,8 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       monetagEnabled: true,
       adsterraNativeBannerKey: import.meta.env.VITE_ADSTERRA_NATIVE_BANNER_KEY || '4a9b8c7d6e5f4123890abc',
       adsterraSocialBarKey: import.meta.env.VITE_ADSTERRA_SOCIAL_BAR_KEY || '',
-      monetagZoneId: import.meta.env.VITE_MONETAG_ZONE_ID || '8934521',
-      monetagInPagePushKey: import.meta.env.VITE_MONETAG_IN_PAGE_PUSH_KEY || '',
+      monetagZoneId: import.meta.env.VITE_MONETAG_ZONE_ID || '12077069',
+      monetagInPagePushKey: import.meta.env.VITE_MONETAG_IN_PAGE_PUSH_KEY || 'https://5gvci.com/pfe/current/tag.min.js?z=12077069',
       testMode: true
     };
   };

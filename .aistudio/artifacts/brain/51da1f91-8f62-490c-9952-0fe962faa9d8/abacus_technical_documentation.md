@@ -104,13 +104,13 @@ VITE_FIREBASE_VAPID_KEY="BI8clKYd0CVi0hugxsjYEHbQyU9azVUoQlyoVov9Z8jIzH__z0Mxia8
 
 ### ৪.৩ Monetag ও Adsterra কোড যুক্ত/পরিবর্তন করার নির্দিষ্ট ফাইল ও লাইন তালিকা:
 
-| ফাইল (File Path) | লাইন নম্বর (Line Range) | কোন নেটওয়ার্ক | কী পরিবর্তন করবেন |
+| ফাইল (File Path) | লাইন নম্বর / লোকেশন | কোন নেটওয়ার্ক | বর্তমান স্ট্যাটাস ও কোড |
 | :--- | :--- | :--- | :--- |
-| **`/index.html`** | **লাইন ১৯ থেকে ২৫** (`<head>` এর ভেতর) | **Monetag** (MultiTag / In-Page Push) অথবা **Adsterra** | Monetag ড্যাশবোর্ড থেকে প্রাপ্ত `<script src="https://al5sm.com/pfe/current/tag.min.js?z=ZONE_ID" ...></script>` ট্যাগটি এখানে পেস্ট করুন। |
-| **`/index.html`** | **লাইন ২৮ থেকে ৩৫** (`</body>` এর ঠিক পূর্বে) | **Adsterra** (Social Bar / Popunder) | Adsterra ড্যাশবোর্ড থেকে প্রাপ্ত Social Bar স্ক্রিপ্ট `<script type='text/javascript' src='//.../invoke.js'></script>` এখানে পেস্ট করুন। |
-| **`/src/components/MonetizationCenter.tsx`** | **লাইন ১০ থেকে ১৮** | **উভয় নেটওয়ার্ক** (Adsterra & Monetag) | `DEFAULT_CONFIG` অবজেক্টের ভেতর আপনার `adsterraNativeBannerKey`, `monetagZoneId`, এবং `testMode: false` সেট করুন। |
-| **অ্যাপ UI থেকে সরাসরি** | **"বিজ্ঞাপন ও আয়" ➔ "কোড ও সেটিংস" ট্যাব** | **উভয় নেটওয়ার্ক** | কোড এডিট না করেও সরাসরি অ্যাপের UI-তে আপনার Zone ID ও Adsterra Key লিখে **Save Configuration** চাপলে তা স্বয়ংক্রিয়ভাবে কার্যকর হবে। |
-| **`/src/components/AdBanner.tsx`** | **লাইন ৩২ থেকে ৬২** | **ব্যানার স্ক্রিপ্ট রেন্ডারিং** | ব্যানার স্ক্রিপ্ট ইনজেকশন কাস্টমাইজেশন (যেমন ব্যানার সাইজ 300x250, 728x90 বা রিওয়ার্ডেড কল)। |
+| **`/public/sw.js`** | সম্পূর্ণ ফাইল | **Monetag Web Push Service Worker** | `self.options = { "domain": "5gvci.com", "zoneId": 12077069 }; importScripts('https://5gvci.com/act/files/service-worker.min.js?r=sw')` সম্পূর্ণ সক্রিয় করা হয়েছে। |
+| **`/index.html`** | লাইন ২০-২৫ (`<head>` এর ভেতর) | **Monetag MultiTag** | `<script src="https://5gvci.com/pfe/current/tag.min.js?z=12077069" data-cfasync="false" async></script>` যুক্ত করা হয়েছে। |
+| **`/.env` & `/.env.example`** | লাইন ২৭-৩০ | **Monetag Environment Variables** | `VITE_MONETAG_ZONE_ID="12077069"` এবং `VITE_MONETAG_DOMAIN="5gvci.com"` সেট করা হয়েছে। |
+| **`/src/components/MonetizationCenter.tsx`** | লাইন ১০-১৮ | **উভয় নেটওয়ার্ক** | ডিফল্ট Zone ID `12077069` এবং ইন-পেজ পুশ স্ক্রিপ্ট আপডেট করা হয়েছে। |
+| **`/src/components/AdBanner.tsx`** | লাইন ২৭-৩৫ | **ব্যানার স্ক্রিপ্ট রেন্ডারিং** | Monetag Zone `12077069` ব্যানার ও ইন-পেজ পুশ সমন্বিত করা হয়েছে। |
 
 ---
 

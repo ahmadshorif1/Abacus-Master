@@ -12,8 +12,8 @@ const DEFAULT_CONFIG: AdConfiguration = {
   monetagEnabled: true,
   adsterraNativeBannerKey: import.meta.env.VITE_ADSTERRA_NATIVE_BANNER_KEY || '4a9b8c7d6e5f4123890abc',
   adsterraSocialBarKey: import.meta.env.VITE_ADSTERRA_SOCIAL_BAR_KEY || '//pl22345678.profitablegatecpm.com/4a/9b/8c/...',
-  monetagZoneId: import.meta.env.VITE_MONETAG_ZONE_ID || '8934521',
-  monetagInPagePushKey: import.meta.env.VITE_MONETAG_IN_PAGE_PUSH_KEY || 'https://al5sm.com/pfe/current/tag.min.js?z=8934521',
+  monetagZoneId: import.meta.env.VITE_MONETAG_ZONE_ID || '12077069',
+  monetagInPagePushKey: import.meta.env.VITE_MONETAG_IN_PAGE_PUSH_KEY || 'https://5gvci.com/pfe/current/tag.min.js?z=12077069',
   testMode: true
 };
 
