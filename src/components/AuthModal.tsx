@@ -33,13 +33,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isOperationNotAllowed, setIsOperationNotAllowed] = useState(false);
   const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
+  const handleLocalAccountLogin = () => {
+    onLoginSuccess({
+      uid: 'local-' + Date.now().toString(36),
+      email: email || 'student@abacus.local',
+      displayName: displayName || email?.split('@')[0] || 'Learner',
+      isAnonymous: false
+    });
+    onClose();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+    setIsOperationNotAllowed(false);
     setLoading(true);
 
     try {
@@ -71,7 +83,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     } catch (err: unknown) {
       const e = err as { message?: string; code?: string };
       console.error('Firebase Auth Error:', e);
-      if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password') {
+      if (e.code === 'auth/operation-not-allowed') {
+        setIsOperationNotAllowed(true);
+        setErrorMsg(
+          lang === 'bn'
+            ? 'ফায়ারবেজ কনসোলে Email/Password সাইন-ইন পদ্ধতি এখনও সক্রিয় (Enable) করা হয়নি।'
+            : 'Email/Password sign-in provider is not enabled in Firebase Console yet.'
+        );
+      } else if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password') {
         setErrorMsg(lang === 'bn' ? 'ইমেইল অথবা পাসওয়ার্ড সঠিক নয়।' : 'Invalid email or password.');
       } else if (e.code === 'auth/email-already-in-use') {
         setErrorMsg(lang === 'bn' ? 'এই ইমেইলটি ইতিপূর্বে ব্যবহৃত হয়েছে।' : 'Email is already registered.');
@@ -88,6 +107,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const handleGuestLogin = async () => {
     setLoading(true);
     setErrorMsg(null);
+    setIsOperationNotAllowed(false);
     try {
       const cred = await signInAnonymously(auth);
       onLoginSuccess({
@@ -211,8 +231,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             </div>
 
             {errorMsg && (
-              <div className="p-3 bg-red-950/80 border border-red-500/40 text-red-300 text-xs rounded-xl">
-                {errorMsg}
+              <div className="p-3.5 bg-red-950/90 border border-red-500/50 text-red-200 text-xs rounded-xl space-y-2.5">
+                <div className="font-semibold text-red-300 flex items-center gap-1.5">
+                  <span>⚠️</span>
+                  <span>{errorMsg}</span>
+                </div>
+
+                {isOperationNotAllowed && (
+                  <div className="bg-slate-950/70 p-2.5 rounded-lg border border-red-900/60 text-[11px] text-slate-300 space-y-2">
+                    <p className="font-medium text-amber-300">
+                      {lang === 'bn'
+                        ? '🛠️ ফায়ারবেজে যেভাবে এটি সমাধান করবেন (১ মিনিট):'
+                        : '🛠️ How to fix in Firebase Console (1 minute):'}
+                    </p>
+                    <ol className="list-decimal list-inside space-y-0.5 text-slate-400">
+                      <li><a href="https://console.firebase.google.com/project/abacus-master-b7d57/authentication/providers" target="_blank" rel="noopener noreferrer" className="text-amber-400 underline font-mono">Firebase Console</a> এ যান</li>
+                      <li><strong>Authentication ➔ Sign-in method</strong> ট্যাবে ক্লিক করুন</li>
+                      <li><strong>Email/Password</strong> সিলেক্ট করে <strong>Enable</strong> চালু করুন</li>
+                      <li><strong>Save</strong> বাটনে চাপ দিন</li>
+                    </ol>
+
+                    <div className="pt-1 border-t border-slate-800">
+                      <p className="text-[11px] text-slate-300 mb-1.5">
+                        {lang === 'bn'
+                          ? 'কনসোল সেটআপ না হওয়া পর্যন্ত আপনি এখনই লোকাল প্রোফাইলে প্রবেশ করতে পারেন:'
+                          : 'Or continue immediately with this profile locally:'}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleLocalAccountLogin}
+                        className="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs cursor-pointer shadow-md transition-colors"
+                      >
+                        ⚡ {lang === 'bn' ? `"${displayName || 'ahmad'}" হিসেবে এখনই প্রবেশ করুন` : 'Continue with this Profile Now'}
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
